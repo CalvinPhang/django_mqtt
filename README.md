@@ -1,1 +1,2 @@
-# django_mqtt
+# Django MQTT
+Sensor simulation with node red
