@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  
+  
+</head>
+  
+<body class="container-fluid">
+  <center class="row" style="background-color: #D8D8D8; margin-bottom: 10px; padding-bottom: 20px;">
+    <h1><b>UTS - Realtime Sensor Dashboard</b></h1>
+    <h2>Calvin Phangnesia | 202001309</h2>
+  </center>
+  <div class="row">
+    <div class="col-md-4" style="padding: 20px 20px 20px 100px">
+        <h1>Temperature: <span id="temp-value">{{ temp }}</span> &#176;C</h1>
+    </div>
+    <div class="col-md-4" style="padding: 20px 20px 20px 100px">
+        <h1>Friction: <span id="fric-value">{{ fric }}</span> dB</h1>
+    </div>
+    <div class="col-md-4" style="padding: 20px 20px 20px 100px">
+        <h1>Power: <span id="power-value">{{ power }}</span> W</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <canvas id="temp-chart"></canvas>
+    </div>
+    <div class="col-md-4">
+      <canvas id="fric-chart"></canvas>
+    </div>
+    <div class="col-md-4">
+      <canvas id="power-chart"></canvas>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  
+  <script>
+    var temp_endpoint = '/api/temp';
+    var fric_endpoint = '/api/fric';
+    var power_endpoint = '/api/power';
+    
+    var temp_chart;
+    var fric_chart;
+    var power_chart;
+
+    $.ajax({
+      method: "GET",
+      url: temp_endpoint,
+      success: function(data) {
+        drawTempLineGraph(data, 'temp-chart', "rgb(36, 89, 83)");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    })
+
+    $.ajax({
+      method: "GET",
+      url: fric_endpoint,
+      success: function(data) {
+        drawFricLineGraph(data, 'fric-chart', "rgb(64, 142, 145)");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    })
+
+    $.ajax({
+      method: "GET",
+      url: power_endpoint,
+      success: function(data) {
+        drawPowerLineGraph(data, 'power-chart', "rgb(228, 147, 147)");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    })
+  
+  
+    function drawTempLineGraph(data, id, color) {
+      var labels = data.time_data;
+      var chartLabel = data.chart_label;
+      var chartdata = data.chart_data;
+      var ctx = document.getElementById(id).getContext('2d');
+      temp_chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+  
+        // The data for our dataset
+        data: {
+          labels: labels,
+          datasets: [{
+            label: chartLabel,
+            backgroundColor: 'rgb(255, 100, 200, 0)',
+            borderColor: color,
+            data: chartdata,
+          }]
+        },
+  
+        // Configuration options go here
+        options: {
+        // animation: false,
+        scales: {
+            xAxes: [{
+              display: true,
+            }],
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 30,
+                    suggestedMax: 150,
+                }
+            }]
+          }
+        }
+  
+      });
+    }
+
+    function drawFricLineGraph(data, id, color) {
+      var labels = data.time_data;
+      var chartLabel = data.chart_label;
+      var chartdata = data.chart_data;
+      var ctx = document.getElementById(id).getContext('2d');
+      fric_chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+  
+        // The data for our dataset
+        data: {
+          labels: labels,
+          datasets: [{
+            label: chartLabel,
+            backgroundColor: 'rgb(255, 100, 200, 0)',
+            borderColor: color,
+            data: chartdata,
+          }]
+        },
+  
+        // Configuration options go here
+        options: {
+        // animation: false,
+        scales: {
+            xAxes: [{
+              display: true,
+            }],
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 5,
+                    suggestedMax: 80,
+                }
+            }]
+          }
+        }
+  
+      });
+    }
+
+    function drawPowerLineGraph(data, id, color) {
+      var labels = data.time_data;
+      var chartLabel = data.chart_label;
+      var chartdata = data.chart_data;
+      var ctx = document.getElementById(id).getContext('2d');
+      power_chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+  
+        // The data for our dataset
+        data: {
+          labels: labels,
+          datasets: [{
+            label: chartLabel,
+            backgroundColor: 'rgb(255, 100, 200, 0)',
+            borderColor: color,
+            data: chartdata,
+          }]
+        },
+  
+        // Configuration options go here
+        options: {
+        // animation: false,
+        scales: {
+            xAxes: [{
+              display: true,
+            }],
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 1000,
+                    suggestedMax: 1500,
+                }
+            }]
+          }
+        }
+  
+      });
+    }
+
+    setInterval(function(){
+        $.ajax({
+            method: "GET",
+            url: temp_endpoint,
+            success: function(data) {
+                var temp_value = document.getElementById('temp-value');
+                temp_value.innerHTML = data.chart_data[9];
+                temp_chart.data.labels = data.time_data;
+                temp_chart.data.datasets[0].data = data.chart_data;
+                temp_chart.update()
+            },
+            error: function(error_data) {
+                console.log(error_data);
+            }
+        })
+
+        $.ajax({
+            method: "GET",
+            url: fric_endpoint,
+            success: function(data) {
+                var fric_value = document.getElementById('fric-value');
+                fric_value.innerHTML = data.chart_data[9];
+                fric_chart.data.labels = data.time_data;
+                fric_chart.data.datasets[0].data = data.chart_data;
+                fric_chart.update()
+            },
+            error: function(error_data) {
+                console.log(error_data);
+            }
+        })
+
+        $.ajax({
+            method: "GET",
+            url: power_endpoint,
+            success: function(data) {
+                var power_value = document.getElementById('power-value');
+                power_value.innerHTML = data.chart_data[9];
+                power_chart.data.labels = data.time_data;
+                power_chart.data.datasets[0].data = data.chart_data;
+                power_chart.update()
+            },
+            error: function(error_data) {
+                console.log(error_data);
+            }
+        })
+    }, 1000);
+    
+    // setTimeout(function(){
+    // window.location.reload(1);
+    // }, 1000);   
+  
+    
+  </script>
+</body>
+  
+</html>

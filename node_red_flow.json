@@ -1,0 +1,227 @@
+[
+    {
+        "id": "861cb17052c6d72e",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f0f5c63965ac877a",
+        "type": "inject",
+        "z": "861cb17052c6d72e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 220,
+        "wires": [
+            [
+                "d1be3e05be3f3f8e",
+                "0d14f139b6f8d2f0",
+                "fce0f53efb6fb2bd"
+            ]
+        ]
+    },
+    {
+        "id": "d1be3e05be3f3f8e",
+        "type": "random",
+        "z": "861cb17052c6d72e",
+        "name": "30-150 derajat ",
+        "low": "30",
+        "high": "150",
+        "inte": "true",
+        "property": "payload",
+        "x": 440,
+        "y": 120,
+        "wires": [
+            [
+                "8949322f9dc68aae",
+                "1ddc61b2f5f97740"
+            ]
+        ]
+    },
+    {
+        "id": "0d14f139b6f8d2f0",
+        "type": "random",
+        "z": "861cb17052c6d72e",
+        "name": "5-80 dB",
+        "low": "5",
+        "high": "80",
+        "inte": "true",
+        "property": "payload",
+        "x": 420,
+        "y": 220,
+        "wires": [
+            [
+                "bb3c9667f0387575",
+                "b907a49c9bf2bbd6"
+            ]
+        ]
+    },
+    {
+        "id": "fce0f53efb6fb2bd",
+        "type": "random",
+        "z": "861cb17052c6d72e",
+        "name": "1000-1500 W",
+        "low": "1000",
+        "high": "1500",
+        "inte": "true",
+        "property": "payload",
+        "x": 440,
+        "y": 320,
+        "wires": [
+            [
+                "23c3abd8a78e7903",
+                "b9c4430cf80a4f60"
+            ]
+        ]
+    },
+    {
+        "id": "8949322f9dc68aae",
+        "type": "mqtt out",
+        "z": "861cb17052c6d72e",
+        "name": "Sensor Temperatur",
+        "topic": "uts/temperature",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a06e2cd503d56e96",
+        "x": 670,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "bb3c9667f0387575",
+        "type": "mqtt out",
+        "z": "861cb17052c6d72e",
+        "name": "Sensor Friksi",
+        "topic": "uts/friction",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a06e2cd503d56e96",
+        "x": 650,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "23c3abd8a78e7903",
+        "type": "mqtt out",
+        "z": "861cb17052c6d72e",
+        "name": "Sensor Daya Listrik",
+        "topic": "uts/power",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a06e2cd503d56e96",
+        "x": 670,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "1ddc61b2f5f97740",
+        "type": "debug",
+        "z": "861cb17052c6d72e",
+        "name": "Sensor Temperatur",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b907a49c9bf2bbd6",
+        "type": "debug",
+        "z": "861cb17052c6d72e",
+        "name": "Sensor Friksi",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "b9c4430cf80a4f60",
+        "type": "debug",
+        "z": "861cb17052c6d72e",
+        "name": "Sensor Daya Listrik",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "a06e2cd503d56e96",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
